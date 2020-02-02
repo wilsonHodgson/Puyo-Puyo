@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class P1KeyboardController : MonoBehaviour
 {
@@ -51,10 +52,12 @@ public class P1KeyboardController : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 //test key
-                FindObjectOfType<AudioManager>().Play("gameOver");
+                /*FindObjectOfType<AudioManager>().Play("gameOver");
                 player.gameOverObj.SetActive(true);
                 player.gameStatus = GameMaster.GameStatus.GamePause;
-                FindObjectOfType<AudioManager>().StopPlaying("music");
+                FindObjectOfType<AudioManager>().StopPlaying("music");*/
+                SceneManager.LoadScene("Main");
+
             }
         }
     }
