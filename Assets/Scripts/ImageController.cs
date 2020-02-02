@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ImageController : MonoBehaviour
-{
+{ 
+    public GameObject player_object; 
+    private GameMaster player;
     public Sprite[] bluePuyoLinkedImgArr;
     public Sprite[] greenPuyoLinkedImgArr;
     public Sprite[] purplePuyoLinkedImgArr;
@@ -45,6 +47,9 @@ public class ImageController : MonoBehaviour
 
     void Start()
     {
+        if (player_object != null){
+            player = player_object.GetComponent<GameMaster>();
+        }
         distributingPuyoImgToDictionary(bluePuyoLinkedImgArr, bluePuyoImgDic);
         distributingPuyoImgToDictionary(greenPuyoLinkedImgArr, greenPuyoImgDic);
         distributingPuyoImgToDictionary(purplePuyoLinkedImgArr, purplePuyoImgDic);
@@ -57,9 +62,9 @@ public class ImageController : MonoBehaviour
         distributingShinyPuyoToDictionary(shinyPuyoArr, shinyPuyoDic);
     }
 
-    public static void setShinyPuyo(int num)
+    public void setShinyPuyo(int num)
     {
-        GameMaster.mainPuyoShinyObj.GetComponent<Image>().sprite = shinyPuyoDic[num];
+        player.mainPuyoShinyObj.GetComponent<Image>().sprite = shinyPuyoDic[num];
     }
 
     public static void setComboNumber(int num)
