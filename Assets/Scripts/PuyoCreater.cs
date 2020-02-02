@@ -36,7 +36,7 @@ public class PuyoCreater : MonoBehaviour
     public Puyo PuyoCreate(int x, int y) {
         //print("puyo is creating...");
         Puyo puyo = player.puyoGroupObj.AddComponent<Puyo>();
-        puyo.setColor(Random.Range(0, 5));
+        puyo.setColor(Random.Range(0, 3));
         puyo.setLinkStatus(ImageController.NORMAL);
         GameObject newPuyoObj;
         switch (puyo.getColor()) {

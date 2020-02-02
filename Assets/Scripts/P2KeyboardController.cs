@@ -30,20 +30,20 @@ public class P2KeyboardController : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("move");
                 controller.puyoRight(true);
             }
-            if (Input.GetKey(KeyCode.S) && (!controller.reachBottom((int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
+            if (Input.GetKeyDown(KeyCode.S) && (!controller.reachBottom((int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
                                                        !controller.reachBottom((int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
                 FindObjectOfType<AudioManager>().Play("move");
                 controller.puyoDown(true);
             }
             //counterclockwise
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.W))
             {
                 controller.puyoCounterclockwise();
                 FindObjectOfType<AudioManager>().Play("rotate");
             }
             //clockwise
-            if (Input.GetKeyDown(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 controller.puyoClockwise();
                 FindObjectOfType<AudioManager>().Play("rotate");

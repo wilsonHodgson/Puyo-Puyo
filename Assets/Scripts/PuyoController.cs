@@ -575,6 +575,12 @@ public class PuyoController : MonoBehaviour {
 
     public void deleteRows(int rowDeleteHeight)
     {
+        if (isGameOver(rowDeleteHeight))
+        {
+            FindObjectOfType<AudioManager>().Play("dead");
+            player.gameOverObj.SetActive(true);
+            player.gameStatus = GameMaster.GameStatus.GamePause;
+        }
         for (int y = 0; y < rowDeleteHeight; y++)
         {
             for (int x = 0; x < 6; x++)
@@ -606,10 +612,16 @@ public class PuyoController : MonoBehaviour {
 
     public bool isGameOver(int rowDeleteHeight)
     {
-        if ((rowDeleteHeight >= player.controlMainPuyo.getPosition().y) || (rowDeleteHeight >= player.controlSubPuyo.getPosition().y))
-            return true;
-
-        return false;
+        for (int y = 0; y <= rowDeleteHeight; y++)
+        {
+            for (int x = 0; x < 6; x++)
+            {
+                if (player.puyoArr[x, y] != null){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void hold()
