@@ -51,7 +51,10 @@ public class P1KeyboardController : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 //test key
-                FindObjectOfType<AudioManager>().Play("placePuyo");
+                FindObjectOfType<AudioManager>().Play("gameOver");
+                player.gameOverObj.SetActive(true);
+                player.gameStatus = GameMaster.GameStatus.GamePause;
+                FindObjectOfType<AudioManager>().StopPlaying("music");
             }
         }
     }
