@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class PuyoController : MonoBehaviour
-{
+public class PuyoController : MonoBehaviour {
     public static void puyoCreate()
     {
         GameMaster.controlMainPuyo = GameMaster.puyoInventory.Dequeue();
@@ -24,8 +23,7 @@ public class PuyoController : MonoBehaviour
         ImageController.setShinyPuyo(GameMaster.controlMainPuyo.getColor());
     }
 
-    public static void puyoDown(bool moveShinyPuyo)
-    {
+    public static void puyoDown(bool moveShinyPuyo) {
         GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition = new Vector3
                     (GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.x, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.y - 32, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.z);
         GameMaster.controlSubPuyo.getPuyoObj().transform.localPosition = new Vector3
@@ -38,8 +36,7 @@ public class PuyoController : MonoBehaviour
         }
     }
 
-    public static void puyoLeft(bool moveShinyPuyo)
-    {
+    public static void puyoLeft(bool moveShinyPuyo) {
         GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition = new Vector3
                     (GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.x - 32, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.y, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.z);
         GameMaster.controlSubPuyo.getPuyoObj().transform.localPosition = new Vector3
@@ -52,8 +49,7 @@ public class PuyoController : MonoBehaviour
         }
     }
 
-    public static void puyoRight(bool moveShinyPuyo)
-    {
+    public static void puyoRight(bool moveShinyPuyo) {
         GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition = new Vector3
                     (GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.x + 32, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.y, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.z);
         GameMaster.controlSubPuyo.getPuyoObj().transform.localPosition = new Vector3
@@ -70,9 +66,8 @@ public class PuyoController : MonoBehaviour
     {
         int x = (int)GameMaster.controlMainPuyo.getPosition().x;
         int y = (int)GameMaster.controlMainPuyo.getPosition().y;
-        if (GameMaster.subPuyoDirection == 0)
-        {
-            if ((x == 0 || GameMaster.puyoArr[x - 1, y] == null) && (x == 5 || GameMaster.puyoArr[x + 1, y] == null))
+        if (GameMaster.subPuyoDirection==0) {
+            if ((x==0 || GameMaster.puyoArr[x - 1, y] == null) && (x == 5 || GameMaster.puyoArr[x + 1, y] == null))
             {
                 if (x == 0 || GameMaster.puyoArr[x - 1, y] != null)
                 {
@@ -82,7 +77,7 @@ public class PuyoController : MonoBehaviour
                 subPuyoMoveToLeft();
             }
         }
-        else if (GameMaster.subPuyoDirection == 1)
+        else if(GameMaster.subPuyoDirection == 1)
         {
             GameMaster.subPuyoDirection = 0;
             subPuyoMoveToTop();
@@ -112,7 +107,6 @@ public class PuyoController : MonoBehaviour
 
     public static void puyoClockwise()
     {
-        //soundManager.playSound("rotateSound");
         int x = (int)GameMaster.controlMainPuyo.getPosition().x;
         int y = (int)GameMaster.controlMainPuyo.getPosition().y;
         if (GameMaster.subPuyoDirection == 0)
@@ -167,7 +161,6 @@ public class PuyoController : MonoBehaviour
                 {
                     if (GameMaster.puyoArr[x, y - 1] == null)
                     {
-                        FindObjectOfType<AudioManager>().Play("placePuyo");
                         GameObject tempPuyo = GameMaster.puyoArr[x, y].getPuyoObj();
                         tempPuyo.transform.localPosition = new Vector3(tempPuyo.transform.localPosition.x, tempPuyo.transform.localPosition.y - 32, tempPuyo.transform.localPosition.z);
                         GameMaster.puyoArr[x, y - 1] = GameMaster.puyoArr[x, y];
@@ -199,22 +192,20 @@ public class PuyoController : MonoBehaviour
         if (y >= 13)
             return false;
 
-        if (x <= 0 && type == 0)
+        if (x <= 0 && type==0)
             return true;
 
         if (x >= 5 && type == 1)
             return true;
 
-        if (type == 0)
-        {
+        if (type==0) {
             if (GameMaster.puyoArr[x - 1, y] != null)
             {
                 return true;
             }
         }
-        else
-        {
-            if (GameMaster.puyoArr[x + 1, y] != null)
+        else {
+            if(GameMaster.puyoArr[x + 1, y] != null)
             {
                 return true;
             }
@@ -222,8 +213,7 @@ public class PuyoController : MonoBehaviour
         return false;
     }
 
-    public static void subPuyoMoveToTop()
-    {
+    public static void subPuyoMoveToTop() {
         GameMaster.controlSubPuyo.getPuyoObj().transform.localPosition = new Vector3
             (GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.x, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.y + 32, GameMaster.controlMainPuyo.getPuyoObj().transform.localPosition.z);
         GameMaster.controlSubPuyo.setPosition(new Vector2(GameMaster.controlMainPuyo.getPosition().x, GameMaster.controlMainPuyo.getPosition().y + 1));
@@ -250,7 +240,70 @@ public class PuyoController : MonoBehaviour
         GameMaster.controlSubPuyo.setPosition(new Vector2(GameMaster.controlMainPuyo.getPosition().x + 1, GameMaster.controlMainPuyo.getPosition().y));
     }
 
-    public static void linkSamePuyo()
+
+    public static bool countLinearPuyo()
+    {
+        bool deletion = false;
+        //Link horizontal obj
+        for (int y = 0; y < 13; y++)
+        {
+            bool emptyRow = true;
+            for (int x = 0; x < 5; x++)
+            {
+                if (GameMaster.puyoArr[x, y] != null)
+                {
+                    emptyRow = false;
+                    if (x < 4) { 
+                        if (
+                            GameMaster.puyoArr[x + 1, y] != null && GameMaster.puyoArr[x, y].getColor() == GameMaster.puyoArr[x + 1, y].getColor() &&
+                            GameMaster.puyoArr[x + 2, y] != null && GameMaster.puyoArr[x, y].getColor() == GameMaster.puyoArr[x + 2, y].getColor()
+                            )
+                        {
+                            GameMaster.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            GameMaster.puyoArr[x + 1, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            GameMaster.puyoArr[x + 2, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            deletion = true;
+                        }
+                    }
+                }
+            }
+            if (emptyRow)
+                break;
+        }
+
+        //Link vertical obj
+        for (int y = 0; y < 13; y++)
+        {
+            bool emptyRow = true;
+            for (int x = 0; x < 6; x++)
+            {
+                if (GameMaster.puyoArr[x, y] != null)
+                {
+                    emptyRow = false;
+                    if (y < 12)
+                    {
+                        if (
+                            GameMaster.puyoArr[x, y + 1] != null && GameMaster.puyoArr[x, y].getColor() == GameMaster.puyoArr[x, y + 1].getColor() &&
+                            GameMaster.puyoArr[x, y + 2] != null && GameMaster.puyoArr[x, y].getColor() == GameMaster.puyoArr[x, y + 2].getColor()
+                            )
+                        {
+                            GameMaster.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            GameMaster.puyoArr[x, y + 1].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            GameMaster.puyoArr[x, y + 2].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            deletion = true;
+                        }
+                    }
+                }
+            }
+            if (emptyRow)
+                break;
+        }
+
+        updatePuyoImage();
+        return deletion;
+    }
+
+        public static void linkSamePuyo()
     {
         //Link horizontal obj
         for (int y = 0; y < 13; y++)
@@ -431,8 +484,8 @@ public class PuyoController : MonoBehaviour
                     //print(puyoArr[x, y].getColor()+" " +puyoArr[x, y].getLinkedPuyoList().Count);
                     if (GameMaster.puyoArr[x, y].getLinkPuyoList().Count >= 4)
                     {
-                        haveLinkPuyo = true;
-                        GameMaster.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                        //haveLinkPuyo = true;
+                        //GameMaster.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
                     }
                 }
             }
@@ -454,7 +507,6 @@ public class PuyoController : MonoBehaviour
                 {
                     if (ImageController.ELIMINATE_FACE == GameMaster.puyoArr[x, y].getLinkStatus())
                     {
-                        FindObjectOfType<AudioManager>().Play("chain");
                         Destroy(GameMaster.puyoArr[x, y].getPuyoObj());
                         GameMaster.puyoArr[x, y] = null;
                     }
@@ -466,59 +518,12 @@ public class PuyoController : MonoBehaviour
         }
     }
 
-    public static void eliminateRow()
+    public static bool isGameOver()
     {
-        int rowDeleteHeight = 0;
-        if (isCameraLimit())
-        {
-            for (int y = 7; y < 12; y++)
-            {
-                for (int x = 0; x < 6; x++)
-                {
-                    if (GameMaster.puyoArr[x, y] != null)
-                    {
-                        rowDeleteHeight++;
-                        x = 0;
-                        break;
-                    }
-                }
-            }
-            for (int y = 0; y < rowDeleteHeight; y++)
-            {
-                for (int x = 0; x < 6; x++)
-                {
-                    if (GameMaster.puyoArr[x, y] != null)
-                    {
-                        FindObjectOfType<AudioManager>().Play("fall");
-                        Destroy(GameMaster.puyoArr[x, y].getPuyoObj());
-                        GameMaster.puyoArr[x, y] = null;
-                    }
-                }
-            }
-            if (isGameOver(rowDeleteHeight))
-            {
-                FindObjectOfType<AudioManager>().Play("dead");
-                GameMaster.gameOverObj.SetActive(true);
-                GameMaster.gameStatus = GameMaster.GameStatus.GamePause;
-            }
-        }
-    }
-
-    public static bool isCameraLimit() //camera threshold for deletion
-    {
-        if (GameMaster.controlMainPuyo.getPosition().y >= 7 || GameMaster.controlSubPuyo.getPosition().y >= 7)
+        if (GameMaster.controlMainPuyo.getPosition().y >= 12 || GameMaster.controlSubPuyo.getPosition().y >= 12)
             return true;
 
         return false;
-    }
-
-    public static bool isGameOver(int rowDeleteHeight)
-    {
-        if ((rowDeleteHeight >= GameMaster.controlMainPuyo.getPosition().y) || (rowDeleteHeight >= GameMaster.controlSubPuyo.getPosition().y))
-            return true;
-
-        return false;
-
     }
 
     public static void hold()
