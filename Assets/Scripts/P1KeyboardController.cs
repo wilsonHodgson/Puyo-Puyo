@@ -37,13 +37,13 @@ public class P1KeyboardController : MonoBehaviour
                 controller.puyoDown(true);
             }
             //counterclockwise
-            if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 controller.puyoCounterclockwise();
                 FindObjectOfType<AudioManager>().Play("rotate");
             }
             //clockwise
-            if (Input.GetKeyUp(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.X))
             {
                 controller.puyoClockwise();
                 FindObjectOfType<AudioManager>().Play("rotate");
