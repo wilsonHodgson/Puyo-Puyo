@@ -4,40 +4,49 @@ using UnityEngine;
 
 public class P2KeyboardController : MonoBehaviour
 {
-    void Update()
-    {
-        if (GameMaster.gameStatus == GameMaster.GameStatus.PuyoFalling)
+    public GameObject player_object;
+    private GameMaster player;
+    private PuyoController controller;
+    // Update is called once per frame
+    void Start () {
+        if (player_object != null) {
+            controller = player_object.GetComponent<PuyoController>();
+            player = player_object.GetComponent<GameMaster>();
+        }
+    }
+    void Update () {
+        if (player.gameStatus==GameMaster.GameStatus.PuyoFalling)
         {
 
-            if (Input.GetKeyUp(KeyCode.A) && (!PuyoController.havingObstacle(0, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
-                                                       !PuyoController.havingObstacle(0, (int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
+            if (Input.GetKeyUp(KeyCode.A) && (!controller.havingObstacle(0, (int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
+                                                       !controller.havingObstacle(0, (int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
-                PuyoController.puyoLeft(true);
+                controller.puyoLeft(true);
             }
-            if (Input.GetKeyUp(KeyCode.D) && (!PuyoController.havingObstacle(1, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
-                                                       !PuyoController.havingObstacle(1, (int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
+            if (Input.GetKeyUp(KeyCode.D) && (!controller.havingObstacle(1, (int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
+                                                       !controller.havingObstacle(1, (int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
-                PuyoController.puyoRight(true);
+                controller.puyoRight(true);
             }
-            if (Input.GetKeyUp(KeyCode.S) && (!PuyoController.reachBottom((int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
-                                                       !PuyoController.reachBottom((int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
+            if (Input.GetKeyUp(KeyCode.S) && (!controller.reachBottom((int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
+                                                       !controller.reachBottom((int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
-                PuyoController.puyoDown(true);
+                controller.puyoDown(true);
             }
             //counterclockwise
             if (Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.W))
             {
-                PuyoController.puyoCounterclockwise();
+                controller.puyoCounterclockwise();
             }
             //clockwise
             if (Input.GetKeyUp(KeyCode.X))
             {
-                PuyoController.puyoClockwise();
+                controller.puyoClockwise();
             }
             //Hold
             /*if (Input.GetKeyUp(KeyCode.Space))
             {
-                PuyoController.hold();
+                controller.hold();
             }*/
         }
     }
