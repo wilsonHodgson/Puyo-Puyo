@@ -211,7 +211,7 @@ public class PuyoController : MonoBehaviour {
         if (y >= 13)
             return false;
 
-        if (x <= 0 && type == 0)
+        if (x <= 0 && type==0)
             return true;
 
         if (x >= 5 && type == 1)
@@ -257,6 +257,69 @@ public class PuyoController : MonoBehaviour {
         player.controlSubPuyo.getPuyoObj().transform.localPosition = new Vector3
             (player.controlMainPuyo.getPuyoObj().transform.localPosition.x + 32, player.controlMainPuyo.getPuyoObj().transform.localPosition.y, player.controlMainPuyo.getPuyoObj().transform.localPosition.z);
         player.controlSubPuyo.setPosition(new Vector2(player.controlMainPuyo.getPosition().x + 1, player.controlMainPuyo.getPosition().y));
+    }
+
+    //quinns new function
+    public bool countLinearPuyo()
+    {
+        bool deletion = false;
+        //Link horizontal obj
+        for (int y = 0; y < 13; y++)
+        {
+            bool emptyRow = true;
+            for (int x = 0; x < 5; x++)
+            {
+                if (player.puyoArr[x, y] != null)
+                {
+                    emptyRow = false;
+                    if (x < 4) { 
+                        if (
+                            player.puyoArr[x + 1, y] != null && player.puyoArr[x, y].getColor() == player.puyoArr[x + 1, y].getColor() &&
+                            player.puyoArr[x + 2, y] != null && player.puyoArr[x, y].getColor() == player.puyoArr[x + 2, y].getColor()
+                            )
+                        {
+                            player.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            player.puyoArr[x + 1, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            player.puyoArr[x + 2, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            deletion = true;
+                        }
+                    }
+                }
+            }
+            if (emptyRow)
+                break;
+        }
+
+        //Link vertical obj
+        for (int y = 0; y < 13; y++)
+        {
+            bool emptyRow = true;
+            for (int x = 0; x < 6; x++)
+            {
+                if (player.puyoArr[x, y] != null)
+                {
+                    emptyRow = false;
+                    if (y < 12)
+                    {
+                        if (
+                            player.puyoArr[x, y + 1] != null && player.puyoArr[x, y].getColor() == player.puyoArr[x, y + 1].getColor() &&
+                            player.puyoArr[x, y + 2] != null && player.puyoArr[x, y].getColor() == player.puyoArr[x, y + 2].getColor()
+                            )
+                        {
+                            player.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            player.puyoArr[x, y + 1].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            player.puyoArr[x, y + 2].setLinkStatus(ImageController.ELIMINATE_FACE);
+                            deletion = true;
+                        }
+                    }
+                }
+            }
+            if (emptyRow)
+                break;
+        }
+
+        updatePuyoImage();
+        return deletion;
     }
 
     public void linkSamePuyo()
@@ -440,8 +503,8 @@ public class PuyoController : MonoBehaviour {
                     //print(puyoArr[x, y].getColor()+" " +puyoArr[x, y].getLinkedPuyoList().Count);
                     if (player.puyoArr[x, y].getLinkPuyoList().Count >= 4)
                     {
-                        haveLinkPuyo = true;
-                        player.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
+                        //haveLinkPuyo = true;
+                        //player.puyoArr[x, y].setLinkStatus(ImageController.ELIMINATE_FACE);
                     }
                 }
             }
@@ -528,7 +591,6 @@ public class PuyoController : MonoBehaviour {
             return true;
 
         return false;
-
     }
 
     public void hold()

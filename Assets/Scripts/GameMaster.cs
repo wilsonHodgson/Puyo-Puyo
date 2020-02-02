@@ -48,6 +48,7 @@ public class GameMaster : MonoBehaviour
     [System.NonSerialized]
     private bool falling = true;
 
+    // Use this for initialization
     void Start() {
         creater = this.GetComponent<PuyoCreater>();
         controller = this.GetComponent<PuyoController>();
@@ -59,6 +60,7 @@ public class GameMaster : MonoBehaviour
         mainPuyoShinyObj = mainPuyoShiny;
     }
 
+    // Update is called once per frame
     void FixedUpdate()
     {
         if (gameStatus == GameStatus.GameInitializing)
@@ -106,6 +108,10 @@ public class GameMaster : MonoBehaviour
             {
                 StartCoroutine("statusChangingGap");
                 gameStatus = GameStatus.GamePause;
+            }else if (controller.countLinearPuyo())
+            {
+                StartCoroutine("statusChangingGap");
+                gameStatus = GameStatus.GamePause;
             }
             else
             {
@@ -120,12 +126,6 @@ public class GameMaster : MonoBehaviour
         if (controller.reachBottom((int)controlMainPuyo.getPosition().x, (int)controlMainPuyo.getPosition().y) || 
             controller.reachBottom((int)controlSubPuyo.getPosition().x, (int)controlSubPuyo.getPosition().y))
         {
-            /*if (controller.isGameOver())
-            {
-                gameOverObj.SetActive(true);
-                gameStatus = GameStatus.GamePause;
-            }*/
-            
                 int mainX = (int)controlMainPuyo.getPosition().x;
                 int mainY = (int)controlMainPuyo.getPosition().y;
                 int subX = (int)controlSubPuyo.getPosition().x;
