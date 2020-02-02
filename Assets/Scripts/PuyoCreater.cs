@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class PuyoCreater : MonoBehaviour
 {
+    public GameObject player_object;
+    private GameMaster player;
     public GameObject bluePuyo;
     public GameObject greenPuyo;
     public GameObject purplePuyo;
     public GameObject redPuyo;
     public GameObject yellowPuyo;
+    public GameObject greyPuyo;
 
     public static GameObject bluePuyoGameObject;
     public static GameObject greenPuyoGameObject;
     public static GameObject purplePuyoGameObject;
     public static GameObject redPuyoGameObject;
     public static GameObject yellowPuyoGameObject;
+    public static GameObject greyPuyoGameObject;
 
     void Start()
     {
+        if (player_object != null){
+            player = player_object.GetComponent<GameMaster>();
+        }
         bluePuyoGameObject = bluePuyo;
         greenPuyoGameObject = greenPuyo;
         purplePuyoGameObject = purplePuyo;
         redPuyoGameObject = redPuyo;
         yellowPuyoGameObject = yellowPuyo;
+        greyPuyoGameObject = greyPuyo;
     }
 
-    public static Puyo PuyoCreate(int x, int y) {
+    public Puyo PuyoCreate(int x, int y) {
         //print("puyo is creating...");
-        Puyo puyo = GameMaster.puyoGroupObj.AddComponent<Puyo>();
+        Puyo puyo = player.puyoGroupObj.AddComponent<Puyo>();
         puyo.setColor(Random.Range(0, 5));
         puyo.setLinkStatus(ImageController.NORMAL);
         GameObject newPuyoObj;
@@ -51,7 +59,29 @@ public class PuyoCreater : MonoBehaviour
                 newPuyoObj = Instantiate(bluePuyoGameObject);
                 break;
         }
-        newPuyoObj.transform.SetParent(GameMaster.puyoGroupObj.transform);
+        newPuyoObj.transform.SetParent(player.puyoGroupObj.transform);
+        newPuyoObj.transform.localPosition = new Vector3(x, y, 0);
+        newPuyoObj.transform.localScale = new Vector3(1, 1, 1);
+        puyo.setPuyoObj(newPuyoObj);
+
+        List<Puyo> puyoList = new List<Puyo>();
+        puyoList.Add(puyo);
+        puyo.setLinkPuyoList(puyoList);
+
+        return puyo;
+    }
+
+    public Puyo TrashCreate(int x, int y){
+        Puyo puyo = player.puyoArr[x,y];
+
+        if (puyo != null){
+            Destroy(puyo.getPuyoObj());
+            puyo = null;
+        }
+        puyo.setColor(5);
+        puyo.setLinkStatus(ImageController.NORMAL);
+
+        GameObject newPuyoObj = Instantiate(greyPuyoGameObject);
         newPuyoObj.transform.localPosition = new Vector3(x, y, 0);
         newPuyoObj.transform.localScale = new Vector3(1, 1, 1);
         puyo.setPuyoObj(newPuyoObj);
