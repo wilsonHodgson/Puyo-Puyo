@@ -475,6 +475,7 @@ public class PuyoController : MonoBehaviour {
         }
     }
 
+//This eliminateRow function has to be broken into pieces. Detect overflow in any instance of PuyoController, and delete rows in all instances of PuyoController
     public void eliminateRow()
     {
         int rowDeleteHeight = 0;

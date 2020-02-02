@@ -15,7 +15,7 @@ public class P1KeyboardController : MonoBehaviour
         }
     }
     void Update () {
-        if (player.gameStatus==player.GameStatus.PuyoFalling)
+        if (player.gameStatus==GameMaster.GameStatus.PuyoFalling)
         {
 
             if (Input.GetKeyDown(KeyCode.LeftArrow) && (!controller.havingObstacle(0, (int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
