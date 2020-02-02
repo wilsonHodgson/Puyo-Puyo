@@ -167,7 +167,6 @@ public class PuyoController : MonoBehaviour
                 {
                     if (GameMaster.puyoArr[x, y - 1] == null)
                     {
-                        FindObjectOfType<AudioManager>().Play("placePuyo");
                         GameObject tempPuyo = GameMaster.puyoArr[x, y].getPuyoObj();
                         tempPuyo.transform.localPosition = new Vector3(tempPuyo.transform.localPosition.x, tempPuyo.transform.localPosition.y - 32, tempPuyo.transform.localPosition.z);
                         GameMaster.puyoArr[x, y - 1] = GameMaster.puyoArr[x, y];
