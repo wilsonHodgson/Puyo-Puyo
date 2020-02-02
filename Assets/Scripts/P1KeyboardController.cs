@@ -2,43 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardController : MonoBehaviour
+public class P1KeyboardController : MonoBehaviour
 {
-    // Update is called once per frame
     void Update () {
         if (GameMaster.gameStatus==GameMaster.GameStatus.PuyoFalling)
         {
 
-            if (Input.GetKeyUp(KeyCode.LeftArrow) && (!PuyoController.havingObstacle(0, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && (!PuyoController.havingObstacle(0, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
                                                        !PuyoController.havingObstacle(0, (int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 PuyoController.puyoLeft(true);
             }
-            if (Input.GetKeyUp(KeyCode.RightArrow) && (!PuyoController.havingObstacle(1, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
+            if (Input.GetKeyDown(KeyCode.RightArrow) && (!PuyoController.havingObstacle(1, (int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
                                                        !PuyoController.havingObstacle(1, (int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 PuyoController.puyoRight(true);
             }
-            if (Input.GetKeyUp(KeyCode.DownArrow) && (!PuyoController.reachBottom((int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
+            if (Input.GetKey(KeyCode.DownArrow) && (!PuyoController.reachBottom((int)GameMaster.controlMainPuyo.getPosition().x, (int)GameMaster.controlMainPuyo.getPosition().y) &&
                                                        !PuyoController.reachBottom((int)GameMaster.controlSubPuyo.getPosition().x, (int)GameMaster.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 PuyoController.puyoDown(true);
             }
             //counterclockwise
-            if (Input.GetKeyUp(KeyCode.Z))
+            if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.UpArrow))
             {
                 PuyoController.puyoCounterclockwise();
+                FindObjectOfType<AudioManager>().Play("rotate");
             }
             //clockwise
             if (Input.GetKeyUp(KeyCode.X))
             {
                 PuyoController.puyoClockwise();
+                FindObjectOfType<AudioManager>().Play("rotate");
             }
-            //Hold
-            /*if (Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space))
             {
-                PuyoController.hold();
-            }*/
+                //test key
+                FindObjectOfType<AudioManager>().Play("placePuyo");
+            }
         }
     }
 }

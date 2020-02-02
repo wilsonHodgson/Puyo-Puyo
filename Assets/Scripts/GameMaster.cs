@@ -33,7 +33,6 @@ public class GameMaster : MonoBehaviour
 
     private bool falling = true;
 
-    // Use this for initialization
     void Start() {
         puyoGroupObj = puyoGroup;
         gameOverObj = gameOver;
@@ -42,7 +41,6 @@ public class GameMaster : MonoBehaviour
         mainPuyoShinyObj = mainPuyoShiny;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (gameStatus == GameStatus.GameInitializing)
@@ -72,6 +70,7 @@ public class GameMaster : MonoBehaviour
 
         if (gameStatus == GameStatus.PuyoArranging)
         {
+            FindObjectOfType<AudioManager>().Play("placePuyo");
             PuyoController.puyoArrange();
             gameStatus = GameStatus.PuyoLinking;
         }
@@ -103,13 +102,12 @@ public class GameMaster : MonoBehaviour
         if (PuyoController.reachBottom((int)controlMainPuyo.getPosition().x, (int)controlMainPuyo.getPosition().y) || 
             PuyoController.reachBottom((int)controlSubPuyo.getPosition().x, (int)controlSubPuyo.getPosition().y))
         {
-            if (PuyoController.isGameOver())
+            /*if (PuyoController.isGameOver())
             {
                 gameOverObj.SetActive(true);
                 gameStatus = GameStatus.GamePause;
-            }
-            else
-            {
+            }*/
+            
                 int mainX = (int)controlMainPuyo.getPosition().x;
                 int mainY = (int)controlMainPuyo.getPosition().y;
                 int subX = (int)controlSubPuyo.getPosition().x;
@@ -118,7 +116,7 @@ public class GameMaster : MonoBehaviour
                 puyoArr[subX, subY] = controlSubPuyo;
 
                 gameStatus = GameStatus.PuyoArranging;
-            }
+                PuyoController.eliminateRow();
         }
         else
         {
