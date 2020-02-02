@@ -592,6 +592,7 @@ public class PuyoController : MonoBehaviour {
             FindObjectOfType<AudioManager>().Play("dead");
             player.gameOverObj.SetActive(true);
             player.gameStatus = GameMaster.GameStatus.GamePause;
+            FindObjectOfType<AudioManager>().StopPlaying("music");
         }
     }
 

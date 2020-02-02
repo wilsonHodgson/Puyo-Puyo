@@ -21,27 +21,32 @@ public class P2KeyboardController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.A) && (!controller.havingObstacle(0, (int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
                                                        !controller.havingObstacle(0, (int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 controller.puyoLeft(true);
             }
             if (Input.GetKeyDown(KeyCode.D) && (!controller.havingObstacle(1, (int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
                                                        !controller.havingObstacle(1, (int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 controller.puyoRight(true);
             }
             if (Input.GetKey(KeyCode.S) && (!controller.reachBottom((int)player.controlMainPuyo.getPosition().x, (int)player.controlMainPuyo.getPosition().y) &&
                                                        !controller.reachBottom((int)player.controlSubPuyo.getPosition().x, (int)player.controlSubPuyo.getPosition().y)))
             {
+                FindObjectOfType<AudioManager>().Play("move");
                 controller.puyoDown(true);
             }
             //counterclockwise
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyUp(KeyCode.W))
             {
                 controller.puyoCounterclockwise();
+                FindObjectOfType<AudioManager>().Play("rotate");
             }
             //clockwise
             if (Input.GetKeyDown(KeyCode.RightShift))
             {
                 controller.puyoClockwise();
+                FindObjectOfType<AudioManager>().Play("rotate");
             }
         }
     }
