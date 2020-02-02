@@ -134,7 +134,7 @@ public class GameMaster : MonoBehaviour
                 puyoArr[subX, subY] = controlSubPuyo;
 
                 gameStatus = GameStatus.PuyoArranging;
-                controller.eliminateRow();
+                controller.checkTowerTooHigh();
         }
         else
         {

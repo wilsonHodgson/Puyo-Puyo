@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 using System.Linq;
 
+[System.Serializable]
+public class IntEvent: UnityEvent<int> {} 
 public class PuyoController : MonoBehaviour {
 
     public GameObject singleton;
@@ -11,7 +14,16 @@ public class PuyoController : MonoBehaviour {
     private PuyoCreater creater;
     private ImageController image_controller;
 
+    private EventManagerPuyo eventManager;
+
+    void Awake(){
+        eventManager = FindObjectOfType<EventManagerPuyo>();
+    }
+
+    void onEnable(){
+    }
     void Start() {
+        eventManager.OnRowDeleteEvent += deleteRows;
         if (singleton != null){
             image_controller = singleton.GetComponent<ImageController>();
         }
@@ -539,7 +551,7 @@ public class PuyoController : MonoBehaviour {
     }
 
 //This eliminateRow function has to be broken into pieces. Detect overflow in any instance of PuyoController, and delete rows in all instances of PuyoController
-    public void eliminateRow()
+    public void checkTowerTooHigh()
     {
         int rowDeleteHeight = 0;
         if (isCameraLimit())
@@ -556,24 +568,30 @@ public class PuyoController : MonoBehaviour {
                     }
                 }
             }
-            for (int y = 0; y < rowDeleteHeight; y++)
+            eventManager.OnRowDeleteMethod(rowDeleteHeight);
+            //send event
+        }
+    }
+
+    public void deleteRows(int rowDeleteHeight)
+    {
+        for (int y = 0; y < rowDeleteHeight; y++)
+        {
+            for (int x = 0; x < 6; x++)
             {
-                for (int x = 0; x < 6; x++)
+                if (player.puyoArr[x, y] != null)
                 {
-                    if (player.puyoArr[x, y] != null)
-                    {
-                        FindObjectOfType<AudioManager>().Play("fall");
-                        Destroy(player.puyoArr[x, y].getPuyoObj());
-                        player.puyoArr[x, y] = null;
-                    }
+                    FindObjectOfType<AudioManager>().Play("fall");
+                    Destroy(player.puyoArr[x, y].getPuyoObj());
+                    player.puyoArr[x, y] = null;
                 }
             }
-            if (isGameOver(rowDeleteHeight))
-            {
-                FindObjectOfType<AudioManager>().Play("dead");
-                player.gameOverObj.SetActive(true);
-                player.gameStatus = GameMaster.GameStatus.GamePause;
-            }
+        }
+        if (isGameOver(rowDeleteHeight))
+        {
+            FindObjectOfType<AudioManager>().Play("dead");
+            player.gameOverObj.SetActive(true);
+            player.gameStatus = GameMaster.GameStatus.GamePause;
         }
     }
 
